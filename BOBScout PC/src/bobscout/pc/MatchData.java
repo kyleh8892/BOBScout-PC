@@ -88,4 +88,15 @@ public class MatchData {
     
     public boolean getEndPark() {return endPark;}
     
+    @Override
+    public String toString(){
+        String output = "";
+        
+        output += matchNumber + "," + driverInnerPortShots + "," + driverOuterPortShots + "," + driverLowerPortShots + "," + driverShotsMissed + ","; //Teleop data
+        output += autoInnerPortShots + "," + autoOuterPortShots + "," + autoLowerPortShots + "," + autoShotsMissed + "," + autoCellsCollected + "," + autoLine + ","; //Auto data
+        output += endHang + "," + endHangDouble + "," + endHangTriple + "," + endHangLevel + "," + endPark; //End data
+        
+        return output;
+    }
+    
 }

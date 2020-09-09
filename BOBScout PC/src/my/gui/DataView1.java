@@ -5,10 +5,9 @@
  */
 package my.gui;
 
-import bobscout.pc.Main;
 import bobscout.pc.MatchData;
 import bobscout.pc.Team;
-import bobscout.pc.TeamManager;
+import bobscout.pc.Main;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
@@ -592,7 +591,7 @@ public class DataView1 extends javax.swing.JFrame {
         
         tabList.clear();
         jTabbedPane1.removeAll();
-        for(Team team : TeamManager.getTeamList()){ // add simple label to each tab with team name on it to test the ability of creating objects on each panel
+        for(Team team : Main.getTeamList()){ // add simple label to each tab with team name on it to test the ability of creating objects on each panel
             tabList.add(new javax.swing.JPanel()); 
         }
         
@@ -610,7 +609,7 @@ public class DataView1 extends javax.swing.JFrame {
 
             teamMatchList.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
             
-            for(MatchData match : TeamManager.getTeam(TeamManager.getTeamNumbers().get(k)).getMatches()){          
+            for(MatchData match : Main.getTeam(Main.getTeamNumbers().get(k)).getMatches()){          
                 listModel.addElement(match.getMatchNumber());
             }
             
@@ -638,7 +637,7 @@ public class DataView1 extends javax.swing.JFrame {
                     .addContainerGap(185, Short.MAX_VALUE))
             );
             
-            panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, TeamManager.getTeamList().get(k).getTeamName(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12)));
+            panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, Main.getTeamList().get(k).getTeamName(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12)));
             
             /*
             Add button to look at average stats ***
@@ -652,7 +651,7 @@ public class DataView1 extends javax.swing.JFrame {
             Add save feature to save a competition
             */
             
-            jTabbedPane1.addTab(Integer.toString(TeamManager.getTeamList().get(tabList.indexOf(panel)).getTeamNumber()), panel);
+            jTabbedPane1.addTab(Integer.toString(Main.getTeamList().get(tabList.indexOf(panel)).getTeamNumber()), panel);
             k++;
         } 
     }

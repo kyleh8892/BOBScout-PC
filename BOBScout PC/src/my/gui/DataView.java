@@ -8,10 +8,14 @@ package my.gui;
 import bobscout.pc.Main;
 import bobscout.pc.MatchData;
 import bobscout.pc.Team;
-import bobscout.pc.TeamManager;
+import bobscout.pc.Main;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -55,6 +59,8 @@ public class DataView extends javax.swing.JFrame {
         messgeCenter.setVisible(false);
         
         updateTabs();
+        
+        this.setTitle("BOBScout PC - " + Main.getCompetitionName());
     }
 
     /**
@@ -76,6 +82,7 @@ public class DataView extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -169,6 +176,14 @@ public class DataView extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
+        jMenuItem3.setText("Save As...");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -244,6 +259,11 @@ public class DataView extends javax.swing.JFrame {
             }            
         }
     }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        saveCompetitionAs();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
     
     private void updateTabs(){
         
@@ -251,7 +271,7 @@ public class DataView extends javax.swing.JFrame {
         
         tabList.clear();
         jTabbedPane1.removeAll();
-        for(Team team : TeamManager.getTeamList()){ 
+        for(Team team : Main.getTeamList()){ 
             tabList.add(new javax.swing.JPanel()); 
             statTabList.add(new Stats());
         }
@@ -261,20 +281,20 @@ public class DataView extends javax.swing.JFrame {
             javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
             panel.setLayout(panelLayout);
             
-            jTabbedPane1.addTab(Integer.toString(TeamManager.getTeamList().get(tabList.indexOf(panel)).getTeamNumber()), panel);
+            jTabbedPane1.addTab(Integer.toString(Main.getTeamList().get(tabList.indexOf(panel)).getTeamNumber()), panel);
             
             javax.swing.JScrollPane teamMatchListPane = new javax.swing.JScrollPane();
             javax.swing.JList teamMatchList = new javax.swing.JList();
             
             DefaultListModel listModel = new DefaultListModel();
 
-            statTabList.get(k).getAverageStats(TeamManager.getTeamList().get(k).getMatches(), TeamManager.getTeamNumbers().get(k));
+            statTabList.get(k).getAverageStats(Main.getTeamList().get(k).getMatches(), Main.getTeamNumbers().get(k));
             
             teamMatchListPane.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
             teamMatchList.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
             
-            for(MatchData match : TeamManager.getTeam(TeamManager.getTeamNumbers().get(k)).getMatches()){          
+            for(MatchData match : Main.getTeam(Main.getTeamNumbers().get(k)).getMatches()){          
                 listModel.addElement(match.getMatchNumber());
             }
             
@@ -338,7 +358,7 @@ public class DataView extends javax.swing.JFrame {
                     .addContainerGap())
             );
             
-            panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, TeamManager.getTeamList().get(k).getTeamName(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12)));
+            panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, Main.getTeamList().get(k).getTeamName(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12)));
             
             k++;
             
@@ -348,9 +368,43 @@ public class DataView extends javax.swing.JFrame {
         }
     }
     
+    private void saveCompetitionAs(){
+        String output = "";
+        JFileChooser fileChooser = new JFileChooser();
+        File fileToSave = new File(Main.getCompetitionName() + ".bsc");
+        
+        fileChooser.setDialogTitle("Save Competition"); 
+        fileChooser.setSelectedFile(fileToSave);
+        
+        for(Team team : Main.getTeamList()){
+            output += "#" + team.getTeamNumber() + "," + team.getTeamName() + ",\n";
+            
+            for(MatchData match : team.getMatches()){
+                output += "*" + match.toString() + ",\n";
+            }
+        }
+        
+        int userSelection = fileChooser.showSaveDialog(this);
+        
+        if(userSelection == JFileChooser.APPROVE_OPTION){
+            fileToSave = fileChooser.getSelectedFile();
+        }else{
+            fileToSave = null;
+        }
+        
+        try {
+            FileWriter fileWriter = new FileWriter(fileToSave);
+            fileWriter.write(output);
+            fileWriter.close();
+            MessageDialog dialog = new MessageDialog(new javax.swing.JFrame(), true,"File Saved!");
+        } catch (IOException e) {
+            
+        }
+    }
+    
     private void goToTab(int number){
-        if(TeamManager.teamNumbers.indexOf(number) > -1){
-            jTabbedPane1.setSelectedIndex(TeamManager.teamNumbers.indexOf(number));
+        if(Main.teamNumbers.indexOf(number) > -1){
+            jTabbedPane1.setSelectedIndex(Main.teamNumbers.indexOf(number));
             messgeCenter.setVisible(false);
             jTextField1.setText("");
         } else{
@@ -362,21 +416,21 @@ public class DataView extends javax.swing.JFrame {
     
     private void matchSelectionChanged (javax.swing.event.ListSelectionEvent evt){
         matchIndex = evt.getFirstIndex();
-        statTabList.get(jTabbedPane1.getSelectedIndex()).getMatchStats(TeamManager.getTeamList().get(teamIndex).getMatches().get(matchIndex), TeamManager.getTeamNumbers().get(teamIndex));
+        statTabList.get(jTabbedPane1.getSelectedIndex()).getMatchStats(Main.getTeamList().get(teamIndex).getMatches().get(matchIndex), Main.getTeamNumbers().get(teamIndex));
     }
     
     private void averageButtonActionPerformed (java.awt.event.ActionEvent evt){
-        statTabList.get(teamIndex).getAverageStats(TeamManager.getTeamList().get(teamIndex).getMatches(), TeamManager.getTeamNumbers().get(teamIndex));
+        statTabList.get(teamIndex).getAverageStats(Main.getTeamList().get(teamIndex).getMatches(), Main.getTeamNumbers().get(teamIndex));
     }
     
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {                                          
         if(jTabbedPane1.getSelectedIndex() > -1){teamIndex = jTabbedPane1.getSelectedIndex();}
-        statTabList.get(teamIndex).getAverageStats(TeamManager.getTeamList().get(teamIndex).getMatches(), TeamManager.getTeamNumbers().get(teamIndex));
+        statTabList.get(teamIndex).getAverageStats(Main.getTeamList().get(teamIndex).getMatches(), Main.getTeamNumbers().get(teamIndex));
     }
     
     private void teamMatchListFocusGained(java.awt.event.FocusEvent evt){ 
         if(evt.getCause().toString().equalsIgnoreCase("mouse_event")){
-            statTabList.get(teamIndex).getMatchStats(TeamManager.getTeamList().get(teamIndex).getMatches().get(matchIndex), TeamManager.getTeamNumbers().get(teamIndex));
+            statTabList.get(teamIndex).getMatchStats(Main.getTeamList().get(teamIndex).getMatches().get(matchIndex), Main.getTeamNumbers().get(teamIndex));
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -387,6 +441,7 @@ public class DataView extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;

@@ -364,33 +364,15 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="Red1EndHang">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="default"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="Red1EndPark">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="default"/>
-            </Property>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="Red1EndDoubleHang">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="default"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="Red1EndTripleHang">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="default"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Red1Reset">
           <Properties>
@@ -401,11 +383,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="Red1EndLevelHang">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="default"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="Red1AutoLine">
         </Component>

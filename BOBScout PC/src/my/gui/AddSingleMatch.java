@@ -5,7 +5,7 @@
  */
 package my.gui;
 
-import bobscout.pc.TeamManager;
+import bobscout.pc.Main;
 import java.util.ArrayList;
 
 /**
@@ -432,7 +432,7 @@ public class AddSingleMatch extends javax.swing.JDialog {
             MessageLabel.setText("Please enter a value for match number!");
         }else{
             try{
-                TeamManager.getTeamList().get(TeamManager.getTeamNumbers().indexOf(Integer.valueOf(Red1TeamNumber.getText()))).addMatch(Integer.valueOf(MatchNumber.getText()), cellData, boolData);
+                Main.getTeamList().get(Main.getTeamNumbers().indexOf(Integer.valueOf(Red1TeamNumber.getText()))).addMatch(Integer.valueOf(MatchNumber.getText()), cellData, boolData);
             }catch(NumberFormatException ex){                   
                 MessageLabel.setText("Please only enter numbers for team number and match number fields!");
             }catch(IndexOutOfBoundsException ex){

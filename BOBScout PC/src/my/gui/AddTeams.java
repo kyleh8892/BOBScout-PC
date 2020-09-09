@@ -6,7 +6,7 @@
 package my.gui;
 
 import bobscout.pc.Team;
-import bobscout.pc.TeamManager;
+import bobscout.pc.Main;
 import java.awt.event.KeyEvent;
 import javax.swing.DefaultListModel;
 
@@ -245,7 +245,7 @@ public class AddTeams extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         int index = jList1.getSelectedIndex();
-        TeamManager.removeTeam(index);
+        Main.removeTeam(index);
         model.remove(index);
         updateList();
         jButton2.setEnabled(false);
@@ -271,9 +271,9 @@ public class AddTeams extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void updateList(){
-        TeamManager.sortTeams();
+        Main.sortTeams();
         model.clear();
-        for(Team team : TeamManager.getTeamList()){
+        for(Team team : Main.getTeamList()){
             model.addElement(team.toString());
         }
         jList1.setModel(model); 
@@ -282,7 +282,7 @@ public class AddTeams extends javax.swing.JDialog {
     public void addTeam(){
         try{
             Team team = new Team(Integer.parseInt(jTextField2.getText()),jTextField1.getText());
-            TeamManager.addTeam(team);
+            Main.addTeam(team);
             updateList();
             jTextField1.setText("");
             jTextField2.setText("");
