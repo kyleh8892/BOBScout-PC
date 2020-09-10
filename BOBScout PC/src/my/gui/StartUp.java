@@ -69,7 +69,11 @@ public class StartUp extends javax.swing.JFrame {
         });
 
         jButton2.setText("Open Competition");
-        jButton2.setEnabled(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/gui/Icons/Collage_2020-07-23_19_31_21-removebg-preview.png"))); // NOI18N
@@ -125,6 +129,12 @@ public class StartUp extends javax.swing.JFrame {
         Main.showNameComp();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Main.openCompetition(this);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

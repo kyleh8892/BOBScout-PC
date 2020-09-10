@@ -262,7 +262,7 @@ public class DataView extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        saveCompetitionAs();
+        Main.saveCompetitionAs(this);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
     
     private void updateTabs(){
@@ -361,44 +361,6 @@ public class DataView extends javax.swing.JFrame {
             panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, Main.getTeamList().get(k).getTeamName(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12)));
             
             k++;
-            
-            /*
-                Stats panel issue will have to be fixed by creating a list of stats panels and then setting them based on which tab is selected
-            */
-        }
-    }
-    
-    private void saveCompetitionAs(){
-        String output = "";
-        JFileChooser fileChooser = new JFileChooser();
-        File fileToSave = new File(Main.getCompetitionName() + ".bsc");
-        
-        fileChooser.setDialogTitle("Save Competition"); 
-        fileChooser.setSelectedFile(fileToSave);
-        
-        for(Team team : Main.getTeamList()){
-            output += "#" + team.getTeamNumber() + "," + team.getTeamName() + ",\n";
-            
-            for(MatchData match : team.getMatches()){
-                output += "*" + match.toString() + ",\n";
-            }
-        }
-        
-        int userSelection = fileChooser.showSaveDialog(this);
-        
-        if(userSelection == JFileChooser.APPROVE_OPTION){
-            fileToSave = fileChooser.getSelectedFile();
-        }else{
-            fileToSave = null;
-        }
-        
-        try {
-            FileWriter fileWriter = new FileWriter(fileToSave);
-            fileWriter.write(output);
-            fileWriter.close();
-            MessageDialog dialog = new MessageDialog(new javax.swing.JFrame(), true,"File Saved!");
-        } catch (IOException e) {
-            
         }
     }
     
