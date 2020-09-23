@@ -6,16 +6,19 @@
 package bobscout.pc;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
  * @author kyleh
  */
-public class Team implements Comparable<Team>{
+public class Team{ //implements Comparable<Team>{
     
     private int teamNumber;
+    private int teamPower;
     private String teamName;
     private ArrayList<MatchData> matches = new ArrayList<>();
+    
     
     public Team(int number, String name){
         teamNumber = number;
@@ -34,6 +37,16 @@ public class Team implements Comparable<Team>{
         return teamName;
     }
     
+    public void updateTeamPower(){
+        for (MatchData match : matches) {
+            teamPower += match.getPower();
+        }
+    }
+    
+    public int getTeamPower(){
+        return teamPower;
+    }
+    
     public ArrayList<MatchData> getMatches(){
         return matches;
     }
@@ -42,15 +55,16 @@ public class Team implements Comparable<Team>{
     public String toString(){
         return String.format("%5d %-30s", teamNumber, teamName); //format strings lol
     }
-    
-    @Override
-    public int compareTo(Team team){
-        if(team.getTeamNumber() == teamNumber){
-            return 0;
-        }else if(team.getTeamNumber() > teamNumber){
-            return -1;
-        }else{
-            return 1;
-        }
+}
+
+class Sortbynumber implements Comparator<Team>{
+    public int compare(Team a, Team b){
+        return a.getTeamNumber() - b.getTeamNumber();
+    }
+}
+
+class Sortbypower implements Comparator<Team>{
+    public int compare(Team a, Team b){
+        return a.getTeamPower() - b.getTeamPower();
     }
 }

@@ -36,7 +36,13 @@ public class MatchData {
     
     private boolean endPark;
     
+    int[] cell;
+    boolean[]bool;
+    
     public MatchData (int number, int[] cellData, boolean[] boolData){
+        cell = cellData;
+        bool = boolData;
+        
         matchNumber = number;
         
         driverInnerPortShots = cellData[0];
@@ -87,6 +93,19 @@ public class MatchData {
     public boolean getEndHangLevel() {return endHangLevel;}
     
     public boolean getEndPark() {return endPark;}
+    
+    public int getPower(){
+        int power = 0;
+        
+        for (int i : cell) {
+            power += i;
+        }
+        
+        for (boolean i : bool) {
+            power += Integer.parseInt(String.valueOf(i)) * 5;
+        }
+        return power;
+    }
     
     @Override
     public String toString(){

@@ -395,6 +395,7 @@ public class AddSingleMatch extends javax.swing.JDialog {
     private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
         // TODO add your handling code here:
         addMatch();//Non existent method
+        Main.setChangesMade(true);
         this.dispose();
     }//GEN-LAST:event_OKButtonActionPerformed
 

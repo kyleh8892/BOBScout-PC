@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -38,8 +39,36 @@ public class Main {
     public static ArrayList<Team> teamList = new ArrayList<Team>();
     public static ArrayList<Integer> teamNumbers = new ArrayList<>();
     
+    public static boolean changesMade = false;
+    
+    public static File competitionFile = null;
+    
+    public static void saveCompetition(){
+        String output = competitionName + ",\n";
+        File fileToSave = competitionFile;
+        
+        for(Team team : getTeamList()){
+            output += "#" + team.getTeamNumber() + "," + team.getTeamName() + ",\n";
+            
+            for(MatchData match : team.getMatches()){
+                output += "*" + match.toString() + ",\n";
+            }
+        }
+        
+        try {
+            FileWriter fileWriter = new FileWriter(fileToSave);
+            fileWriter.write(output);
+            fileWriter.close();
+            MessageDialog dialog = new MessageDialog(new javax.swing.JFrame(), true,"File Saved!");
+            dialog.setVisible(true);
+        } catch (IOException e) {
+            MessageDialog dialog = new MessageDialog(new javax.swing.JFrame(), true, "Error Saving File!");
+            dialog.setVisible(true);
+        }
+    }
+    
     public static void saveCompetitionAs(javax.swing.JFrame frame){
-        String output = "";
+        String output = competitionName + ",\n";
         JFileChooser fileChooser = new JFileChooser();
         File fileToSave = new File(getCompetitionName() + ".bsc");
         
@@ -58,9 +87,12 @@ public class Main {
         
         if(userSelection == JFileChooser.APPROVE_OPTION){
             fileToSave = fileChooser.getSelectedFile();
+            
         }else{
             fileToSave = null;
         }
+        
+        competitionFile = fileToSave;
         
         try {
             FileWriter fileWriter = new FileWriter(fileToSave);
@@ -91,31 +123,40 @@ public class Main {
             dialog.setVisible(true);
         }
         
+        competitionFile = fileToOpen;
+        
         try {
             Scanner fileIn = new Scanner(fileToOpen);
             fileIn.useDelimiter(",");
-            while (fileIn.hasNextLine()){
-                String data = fileIn.next();
-                if(data.startsWith("#")){
+            setCompetitionName(fileIn.next());
+            while (fileIn.hasNext()){
+                String next = fileIn.next();
+                String data = next.replace("\n", "");
+                int k = 0;
+                if(data.contains("#")){
                     String replace = data.replace("#", "");
                     int teamNumber = Integer.parseInt(replace);
                     Team team = new Team(teamNumber, fileIn.next());
                     teamList.add(team);
                     teamNumbers.add(teamNumber);
-                }else if (data.startsWith("*")) {
-                    int matchNumber = Integer.parseInt(fileIn.next());
-                    int[] cellData = new int[10];
-                    boolean[] boolData = new boolean[5];
+                    k++;
+                }else if (data.contains("*")) {
+                    String replace = data.replace("*", "");
+                    int matchNumber = Integer.parseInt(replace);
+                    int[] cellData = new int[9];
+                    boolean[] boolData = new boolean[6];
                     
-                    for(int i = 0; i < 10; i++){
-                        cellData[i] = Integer.parseInt(fileIn.next());
+                    for(int i = 0; i < 9; i++){
+                        String dataString = fileIn.next();
+                        int value = Integer.parseInt(dataString);
+                        cellData[i] = value;
                     }
                     
-                    for(int i = 0; i < 5; i++){
+                    for(int i = 0; i < 6; i++){
                         boolData[i] = Boolean.getBoolean(fileIn.next());
                     }
                     
-                    teamList.get(teamList.size()).addMatch(matchNumber, cellData, boolData);
+                    teamList.get(k).addMatch(matchNumber, cellData, boolData);
                 }
             }
         } catch (Exception e) {
@@ -126,6 +167,13 @@ public class Main {
         showDataView();
     }
     
+    public static void setChangesMade(boolean value){
+        changesMade = value;
+    }
+    
+    public static boolean getChangesMade(){
+        return changesMade;
+    }
     
     public static void setCompetitionName(String name){
         competitionName = name;
@@ -143,15 +191,19 @@ public class Main {
         return teamNumbers;
     }
     
-    public static void sortTeams(){
-        Collections.sort(teamList);
+    public static void sortTeamNumber(){
+        Collections.sort(teamList, new Sortbynumber());
         Collections.sort(teamNumbers);
+    }
+    
+    public static void sortTeamPower(){
+        Collections.sort(teamList, new Sortbypower());
     }
     
     public static void addTeam(Team team){
         teamList.add(team);
         teamNumbers.add(team.getTeamNumber());
-        sortTeams();
+        sortTeamNumber();
     }
     
     public static void removeTeam(int i){

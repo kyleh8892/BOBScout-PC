@@ -82,6 +82,7 @@ public class DataView extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -89,7 +90,7 @@ public class DataView extends javax.swing.JFrame {
 
         jMenuItem4.setText("jMenuItem4");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("BOBScout PC");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("Icons/bobupscale.png")).getImage());
         setResizable(false);
@@ -176,6 +177,14 @@ public class DataView extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
+        jMenuItem5.setText("Save");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
+
         jMenuItem3.setText("Save As...");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,7 +237,7 @@ public class DataView extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        close();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -264,11 +273,35 @@ public class DataView extends javax.swing.JFrame {
         // TODO add your handling code here:
         Main.saveCompetitionAs(this);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        Main.saveCompetition();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    
+    private int close(){
+        if(Main.getChangesMade()){
+            SaveCheck dialog = new SaveCheck(new javax.swing.JFrame(), true, Main.getCompetitionName());
+            int status = dialog.getReturnStatus();
+            switch (status) {
+                case SaveCheck.RET_CANCEL:
+                    return status;
+                case SaveCheck.RET_NOSAVE:
+                    System.exit(0);
+                    return status;
+                case SaveCheck.RET_SAVE:
+                    Main.saveCompetition();
+                    System.exit(0);
+                    return status;
+                default:
+                    return SaveCheck.RET_CANCEL;
+            }
+        }else{
+            return SaveCheck.RET_SAVE;
+        }
+    }
     
     private void updateTabs(){
-        
-        
-        
         tabList.clear();
         jTabbedPane1.removeAll();
         for(Team team : Main.getTeamList()){ 
@@ -362,6 +395,12 @@ public class DataView extends javax.swing.JFrame {
             
             k++;
         }
+        
+        if(Main.changesMade && Main.competitionFile.exists()){
+            jMenuItem5.setEnabled(true);
+        }else{
+            jMenuItem5.setEnabled(false);
+        }
     }
     
     private void goToTab(int number){
@@ -405,6 +444,7 @@ public class DataView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;

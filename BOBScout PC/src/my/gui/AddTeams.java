@@ -233,6 +233,7 @@ public class AddTeams extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         addTeam();
+        Main.setChangesMade(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
@@ -248,6 +249,7 @@ public class AddTeams extends javax.swing.JDialog {
         Main.removeTeam(index);
         model.remove(index);
         updateList();
+        Main.setChangesMade(true);
         jButton2.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -268,10 +270,11 @@ public class AddTeams extends javax.swing.JDialog {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        Main.setChangesMade(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void updateList(){
-        Main.sortTeams();
+        Main.sortTeamNumber();
         model.clear();
         for(Team team : Main.getTeamList()){
             model.addElement(team.toString());
