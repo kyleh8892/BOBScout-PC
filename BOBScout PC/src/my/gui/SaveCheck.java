@@ -59,7 +59,7 @@ public class SaveCheck extends javax.swing.JDialog {
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
     public int getReturnStatus() {
-        this.setVisible(true);
+        setVisible(true);
         return returnStatus;
     }
 
@@ -80,6 +80,7 @@ public class SaveCheck extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);

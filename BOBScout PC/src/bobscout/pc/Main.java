@@ -21,6 +21,7 @@ import my.gui.AddTeams;
 import my.gui.CompetitionName;
 import my.gui.DataView;
 import my.gui.MessageDialog;
+import my.gui.Overview;
 import my.gui.StartUp;
 
 /**
@@ -196,8 +197,10 @@ public class Main {
         Collections.sort(teamNumbers);
     }
     
-    public static void sortTeamPower(){
-        Collections.sort(teamList, new Sortbypower());
+    public static ArrayList<Team> getSortedTeamPower(){
+        var sortList = teamList;
+        Collections.sort(sortList, new Sortbypower());
+        return sortList;
     }
     
     public static void addTeam(Team team){
@@ -266,6 +269,14 @@ public class Main {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CompetitionName(new javax.swing.JFrame(), true).setVisible(true);
+            }
+        });
+    }
+    
+    public static void showOverview(){
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Overview().setVisible(true);
             }
         });
     }

@@ -434,6 +434,7 @@ public class AddSingleMatch extends javax.swing.JDialog {
         }else{
             try{
                 Main.getTeamList().get(Main.getTeamNumbers().indexOf(Integer.valueOf(Red1TeamNumber.getText()))).addMatch(Integer.valueOf(MatchNumber.getText()), cellData, boolData);
+                Main.setChangesMade(true);
             }catch(NumberFormatException ex){                   
                 MessageLabel.setText("Please only enter numbers for team number and match number fields!");
             }catch(IndexOutOfBoundsException ex){

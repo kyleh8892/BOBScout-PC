@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 
 /**
  *
@@ -84,6 +85,7 @@ public class DataView extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -193,6 +195,14 @@ public class DataView extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem3);
 
+        jMenuItem6.setText("Show Overview");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -237,7 +247,7 @@ public class DataView extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        close();
+        setDefaultCloseOperation(close());
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -278,26 +288,36 @@ public class DataView extends javax.swing.JFrame {
         // TODO add your handling code here:
         Main.saveCompetition();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        Main.showOverview();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
     
     private int close(){
-        if(Main.getChangesMade()){
-            SaveCheck dialog = new SaveCheck(new javax.swing.JFrame(), true, Main.getCompetitionName());
-            int status = dialog.getReturnStatus();
+        
+        if(Main.getChangesMade() == true){
+            SaveCheck saveDialog = new SaveCheck(this, true, Main.getCompetitionName());
+            int status = saveDialog.getReturnStatus();
+            System.out.println(status);
             switch (status) {
                 case SaveCheck.RET_CANCEL:
-                    return status;
+                    return JFrame.DO_NOTHING_ON_CLOSE;
+                    
                 case SaveCheck.RET_NOSAVE:
-                    System.exit(0);
-                    return status;
+                    return JFrame.EXIT_ON_CLOSE;
+                    
                 case SaveCheck.RET_SAVE:
                     Main.saveCompetition();
-                    System.exit(0);
-                    return status;
+                    return JFrame.EXIT_ON_CLOSE;
+                    
                 default:
-                    return SaveCheck.RET_CANCEL;
+                    MessageDialog dialog = new MessageDialog(new javax.swing.JFrame(), true, "Error With Save Dialog!");
+                    dialog.setVisible(true);
+                    return JFrame.DO_NOTHING_ON_CLOSE;
             }
         }else{
-            return SaveCheck.RET_SAVE;
+            System.out.println("No Change");
+            return JFrame.EXIT_ON_CLOSE;
         }
     }
     
@@ -445,6 +465,7 @@ public class DataView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;

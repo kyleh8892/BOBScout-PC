@@ -102,7 +102,7 @@ public class MatchData {
         }
         
         for (boolean i : bool) {
-            power += Integer.parseInt(String.valueOf(i)) * 5;
+            power += i ? 5 : 0;
         }
         return power;
     }
