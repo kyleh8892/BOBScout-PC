@@ -247,7 +247,7 @@ public class DataView extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        setDefaultCloseOperation(close());
+        close();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -293,7 +293,7 @@ public class DataView extends javax.swing.JFrame {
         Main.showOverview();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
     
-    private int close(){
+    private void close(){
         
         if(Main.getChangesMade() == true){
             SaveCheck saveDialog = new SaveCheck(this, true, Main.getCompetitionName());
@@ -301,23 +301,21 @@ public class DataView extends javax.swing.JFrame {
             System.out.println(status);
             switch (status) {
                 case SaveCheck.RET_CANCEL:
-                    return JFrame.DO_NOTHING_ON_CLOSE;
                     
                 case SaveCheck.RET_NOSAVE:
-                    return JFrame.EXIT_ON_CLOSE;
+                    System.exit(0);
                     
                 case SaveCheck.RET_SAVE:
                     Main.saveCompetition();
-                    return JFrame.EXIT_ON_CLOSE;
+                    System.exit(0);
                     
                 default:
                     MessageDialog dialog = new MessageDialog(new javax.swing.JFrame(), true, "Error With Save Dialog!");
                     dialog.setVisible(true);
-                    return JFrame.DO_NOTHING_ON_CLOSE;
+                    
             }
         }else{
-            System.out.println("No Change");
-            return JFrame.EXIT_ON_CLOSE;
+            System.exit(0);
         }
     }
     
