@@ -17,7 +17,7 @@ public class Stats extends javax.swing.JPanel {
     
     boolean average = true;
     
-    int colorTransition = 85;
+    private final int colorTransition = 85;
     
     double matches = 0;
     int matchNumber = 0;
@@ -47,7 +47,7 @@ public class Stats extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void getAverageStats(ArrayList<MatchData> matches, int teamNumber){
+    public void displayAverageStats(ArrayList<MatchData> matches, int teamNumber){
         resetData();
         team = teamNumber;
         average = true;
@@ -78,7 +78,7 @@ public class Stats extends javax.swing.JPanel {
         update();
     }
     
-    public void getMatchStats(MatchData match, int teamNumber){
+    public void displayMatchStats(MatchData match, int teamNumber){
         resetData();
         team = teamNumber;
         average = false;
@@ -156,15 +156,15 @@ public class Stats extends javax.swing.JPanel {
             applyColor(teleopMade);
 
             endHang.setText(String.format("%3s", (endHangValue > 1) ? "Yes" : "No"));
-            applyColor(endHang);
+            //applyColor(endHang);
             endPark.setText(String.format("%3s", (endParkValue > 1) ? "Yes" : "No"));
-            if(endHang.getText().equals("No")){applyColor(endPark);}
+            //applyColor(endPark);
             endDouble.setText(String.format("%3s", (endDoubleValue > 1) ? "Yes" : "No"));
             //applyColor(endDouble);
             endTriple.setText(String.format("%3s", (endTripleValue > 1) ? "Yes" : "No"));
             //applyColor(endTriple);
             endLevel.setText(String.format("%3s", (endLevelValue > 1) ? "Yes" : "No"));
-            applyColor(endLevel);
+            //applyColor(endLevel);
             
             setMatchLabels();
         }
@@ -172,7 +172,7 @@ public class Stats extends javax.swing.JPanel {
     }
     
     private void setMatchLabels(){
-        title.setText("Match " + matchNumber + " Stats");
+        title.setText("Team " + team + " Match " + matchNumber + " Stats");
         hangLabel.setText("Hang:");
         doubleLabel.setText("Double:");
         tripleLabel.setText("Triple:");
@@ -278,8 +278,6 @@ public class Stats extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(260, 260));
 
-        averageStats.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
         title.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         title.setText("Average Stats:");
@@ -296,7 +294,7 @@ public class Stats extends javax.swing.JPanel {
 
         jLabel11.setText("% Made:");
 
-        jLabel12.setText("% Line:");
+        jLabel12.setText("       Line:");
 
         autoMade.setText("###");
 
@@ -426,7 +424,7 @@ public class Stats extends javax.swing.JPanel {
                     .addComponent(teleopMade)))
         );
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("End"));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("End\n"));
 
         hangLabel.setText("% Hang:");
 

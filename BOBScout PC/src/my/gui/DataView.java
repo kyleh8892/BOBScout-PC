@@ -22,11 +22,11 @@ public class DataView extends javax.swing.JFrame {
     public static ArrayList<javax.swing.JPanel> tabList = new ArrayList<>();
     public static ArrayList<Stats> statTabList = new ArrayList<>();
         
-    int teamIndex = 0;
+    public int teamIndex = 0;
     int matchIndex = 0;
     
     /**
-     * Creates new form DataView
+     * Creates new form DataView, which is the main way to view all data from individual teams
      */
     public DataView() {
         
@@ -245,22 +245,32 @@ public class DataView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField1KeyPressed
     
+    /**
+     * This method is run anytime the form gains focus, which right now is when it is clicked on or when matches and teams are added. 
+     * It creates a list of panes from the list of teams and matches, then responds to selections
+     * 
+     * This absolutely sucks! There is a massive array of panes that will take up a lot of memory
+     */
     private void updateTabs(){
         
         
         
         tabList.clear();
         jTabbedPane1.removeAll();
+        
+        //Create tabs with empty stats panel
         for(Team team : TeamManager.getTeamList()){ 
             tabList.add(new javax.swing.JPanel()); 
             statTabList.add(new Stats());
         }
         
+        //Configure each panel
         int k = 0;
         for(javax.swing.JPanel panel : tabList){
             javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
             panel.setLayout(panelLayout);
             
+            //Add the panel to the tab
             jTabbedPane1.addTab(Integer.toString(TeamManager.getTeamList().get(tabList.indexOf(panel)).getTeamNumber()), panel);
             
             javax.swing.JScrollPane teamMatchListPane = new javax.swing.JScrollPane();
@@ -268,12 +278,14 @@ public class DataView extends javax.swing.JFrame {
             
             DefaultListModel listModel = new DefaultListModel();
 
-            statTabList.get(k).getAverageStats(TeamManager.getTeamList().get(k).getMatches(), TeamManager.getTeamNumbers().get(k));
+            //Display the average stats in the stats panel
+            statTabList.get(k).displayAverageStats(TeamManager.getTeamList().get(k).getMatches(), TeamManager.getTeamNumbers().get(k));
             
             teamMatchListPane.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
             teamMatchList.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
             
+            //Add an entry in the list for each match for that team
             for(MatchData match : TeamManager.getTeam(TeamManager.getTeamNumbers().get(k)).getMatches()){          
                 listModel.addElement(match.getMatchNumber());
             }
@@ -282,18 +294,21 @@ public class DataView extends javax.swing.JFrame {
             
             averageButton.setText("Average");
             
+           //Display average stats when average button is pressed
             averageButton.addActionListener(new java.awt.event.ActionListener(){
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    averageButtonActionPerformed(evt);
+                    averageButtonActionPerformed(evt, teamMatchList);
                 } 
             });
             
+            //Update the match displayed when the value of the list is changed
             teamMatchList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
                 public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                     matchSelectionChanged(evt);
                 }
             });
             
+            //Display the currently selected match when the list is in focus
             teamMatchList.addFocusListener(new java.awt.event.FocusAdapter() {
                 public void focusGained(java.awt.event.FocusEvent evt) {
                     teamMatchListFocusGained(evt);
@@ -303,6 +318,7 @@ public class DataView extends javax.swing.JFrame {
             teamMatchList.setModel(listModel);
             teamMatchListPane.setViewportView(teamMatchList);
             
+            //Change the panel when the panel is changed
             jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
                 public void stateChanged(javax.swing.event.ChangeEvent evt) {
                     jTabbedPane1StateChanged(evt);
@@ -310,6 +326,7 @@ public class DataView extends javax.swing.JFrame {
             });
             
 
+            //Organize the whole deal
             panelLayout.setHorizontalGroup(
                 panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelLayout.createSequentialGroup()
@@ -341,13 +358,11 @@ public class DataView extends javax.swing.JFrame {
             panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, TeamManager.getTeamList().get(k).getTeamName(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12)));
             
             k++;
-            
-            /*
-                Stats panel issue will have to be fixed by creating a list of stats panels and then setting them based on which tab is selected
-            */
+
         }
     }
     
+    //Select a specific team from the list, display an error when team does not exist
     private void goToTab(int number){
         if(TeamManager.teamNumbers.indexOf(number) > -1){
             jTabbedPane1.setSelectedIndex(TeamManager.teamNumbers.indexOf(number));
@@ -362,23 +377,25 @@ public class DataView extends javax.swing.JFrame {
     
     private void matchSelectionChanged (javax.swing.event.ListSelectionEvent evt){
         matchIndex = evt.getFirstIndex();
-        statTabList.get(jTabbedPane1.getSelectedIndex()).getMatchStats(TeamManager.getTeamList().get(teamIndex).getMatches().get(matchIndex), TeamManager.getTeamNumbers().get(teamIndex));
+        statTabList.get(jTabbedPane1.getSelectedIndex()).displayMatchStats(TeamManager.getTeamList().get(teamIndex).getMatches().get(matchIndex), TeamManager.getTeamNumbers().get(teamIndex));
     }
     
-    private void averageButtonActionPerformed (java.awt.event.ActionEvent evt){
-        statTabList.get(teamIndex).getAverageStats(TeamManager.getTeamList().get(teamIndex).getMatches(), TeamManager.getTeamNumbers().get(teamIndex));
+    private void averageButtonActionPerformed (java.awt.event.ActionEvent evt, javax.swing.JList list){
+        list.clearSelection();
+        statTabList.get(teamIndex).displayAverageStats(TeamManager.getTeamList().get(teamIndex).getMatches(), TeamManager.getTeamNumbers().get(teamIndex));
     }
     
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {                                          
         if(jTabbedPane1.getSelectedIndex() > -1){teamIndex = jTabbedPane1.getSelectedIndex();}
-        statTabList.get(teamIndex).getAverageStats(TeamManager.getTeamList().get(teamIndex).getMatches(), TeamManager.getTeamNumbers().get(teamIndex));
+        statTabList.get(teamIndex).displayAverageStats(TeamManager.getTeamList().get(teamIndex).getMatches(), TeamManager.getTeamNumbers().get(teamIndex));
     }
     
     private void teamMatchListFocusGained(java.awt.event.FocusEvent evt){ 
         if(evt.getCause().toString().equalsIgnoreCase("mouse_event")){
-            statTabList.get(teamIndex).getMatchStats(TeamManager.getTeamList().get(teamIndex).getMatches().get(matchIndex), TeamManager.getTeamNumbers().get(teamIndex));
+            statTabList.get(teamIndex).displayMatchStats(TeamManager.getTeamList().get(teamIndex).getMatches().get(matchIndex), TeamManager.getTeamNumbers().get(teamIndex));
         }
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

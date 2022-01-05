@@ -41,13 +41,6 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="averageStats">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-            <BevelBorder bevelType="1"/>
-          </Border>
-        </Property>
-      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -201,7 +194,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
-                <Property name="text" type="java.lang.String" value="% Line:"/>
+                <Property name="text" type="java.lang.String" value="       Line:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="autoMade">
@@ -340,7 +333,7 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="End"/>
+                <TitledBorder title="End&#xa;"/>
               </Border>
             </Property>
           </Properties>

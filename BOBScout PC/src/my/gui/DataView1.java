@@ -21,7 +21,7 @@ public class DataView1 extends javax.swing.JFrame {
     public static ArrayList<javax.swing.JPanel> tabList = new ArrayList<>();
     
     /**
-     * Creates new form DataView
+     * I think this was created so that I could create a layout and then copy the code
      */
     public DataView1() {
         
