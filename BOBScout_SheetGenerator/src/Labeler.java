@@ -14,7 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-public class App {
+public class Labeler {
 
     private final static int ID_ROW = 0;
     private final static int NUMBER_COLUMN = 3;
